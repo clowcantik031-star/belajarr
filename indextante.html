@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Typing Animation</title>
+
+<style>
+    body {
+        background: black;
+        color: #00ffcc;
+        font-family: monospace;
+        font-size: 22px;
+        padding: 40px;
+    }
+
+    .line {
+        margin-bottom: 20px;
+        text-shadow: 0 0 10px #00ffcc;
+    }
+
+    .cursor {
+        display: inline-block;
+        width: 10px;
+        background: #00ffcc;
+        animation: blink 1s infinite;
+        margin-left: 5px;
+    }
+
+    @keyframes blink {
+        0% { opacity: 1; }
+        50% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+</style>
+</head>
+
+<body>
+
+<div id="lyrics"></div>
+
+<script>
+const lyrics = [
+    "Temanku semua pada jahat tante...",
+    "aku lagi susah mereka ga ada",
+    "coba kalau lagi jayaa...",
+    "aku di puja pujanya tantee",
+    "Sudah terbiasa terjadi tante..",
+    "teman datang ketika lagi butuh saja",
+    "coba kalau lagi susah...",
+    "MEREKA SEMUA MENGHILAANGG..."
+];
+
+const container = document.getElementById("lyrics");
+
+function typeLine(text, speed) {
+    return new Promise(resolve => {
+        const line = document.createElement("div");
+        line.className = "line";
+        container.appendChild(line);
+
+        let i = 0;
+        function typing() {
+            if (i < text.length) {
+                line.innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typing, speed);
+            } else {
+                resolve();
+            }
+        }
+        typing();
+    });
+}
+
+async function singSong() {
+    for (let line of lyrics) {
+        await typeLine(line, 40);
+        await new Promise(r => setTimeout(r, 1000));
+    }
+}
+
+singSong();
+</script>
+
+</body>
+</html>
